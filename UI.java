@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -56,6 +57,7 @@ public class UI extends Application {
 
         Button bookBtn = new Button("Book Appointment");
         Label msg = new Label();
+        msg.setMinHeight(Region.USE_PREF_SIZE);
         ListView<Appointment> apptList = new ListView<>();
 
         bookBtn.setOnAction(e -> {
@@ -71,7 +73,8 @@ public class UI extends Application {
                         dob.getValue(), phone.getText(), email.getText());
                 manager.createAppointment(p, doc, date.getValue(), LocalTime.parse(time.getValue()));
 
-                msg.setText("Booked for " + p);
+                String contact = p.getEmail().isEmpty() ? p.getPhone() : p.getPhone() + ", " + p.getEmail();
+                msg.setText("Booked for " + p + "\nContact: " + contact);
                 apptList.getItems().setAll(manager.getAppointments());
             } catch (IllegalArgumentException ex) {
                 msg.setText(ex.getMessage());

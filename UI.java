@@ -1,11 +1,23 @@
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class UI {
+public class UI extends Application {
 
-    public static void main(String[] args) {
+    PatientRegistry registry = new PatientRegistry();
+    AppointmentManager manager = new AppointmentManager();
+
+    @Override
+    public void start(Stage stage) {
 
         ArrayList<Doctor> doctors = new ArrayList<>();
-
         doctors.add(new Doctor(1, "Sarah", "Marsh", "Internal Medicine"));
         doctors.add(new Doctor(2, "James", "Wilson", "Cardiology"));
         doctors.add(new Doctor(3, "Emily", "Chen", "Dermatology"));
@@ -22,13 +34,64 @@ public class UI {
         doctors.add(new Doctor(14, "Lucas", "Martin", "Urology"));
         doctors.add(new Doctor(15, "Charlotte", "Thompson", "Rheumatology"));
 
+        ListView<Doctor> docList = new ListView<>();
+        docList.getItems().addAll(doctors);
+        docList.setPrefHeight(150);
 
-        /*  Display all doctors
-        for (Doctor d : doctors) { //loops through all doctors
-            System.out.println(d);
-        }
+        TextField first = new TextField();
+        first.setPromptText("First name");
+        TextField last = new TextField();
+        last.setPromptText("Last name");
+        DatePicker dob = new DatePicker();
+        dob.setPromptText("Date of birth");
+        TextField phone = new TextField();
+        phone.setPromptText("Phone");
+        TextField email = new TextField();
+        email.setPromptText("Email");
 
-        */
-       
+        DatePicker date = new DatePicker(LocalDate.now());
+        ComboBox<String> time = new ComboBox<>();
+        time.getItems().addAll("09:00", "10:00", "11:00", "13:00", "14:00", "15:00");
+        time.setPromptText("Time");
+
+        Button bookBtn = new Button("Book Appointment");
+        Label msg = new Label();
+        ListView<Appointment> apptList = new ListView<>();
+
+        bookBtn.setOnAction(e -> {
+            Doctor doc = docList.getSelectionModel().getSelectedItem();
+
+            if (doc == null || dob.getValue() == null || date.getValue() == null || time.getValue() == null) {
+                msg.setText("Pick a doctor, date of birth, date and time");
+                return;
+            }
+
+            try {
+                Patient p = registry.registerPatient(first.getText(), last.getText(),
+                        dob.getValue(), phone.getText(), email.getText());
+                manager.createAppointment(p, doc, date.getValue(), LocalTime.parse(time.getValue()));
+
+                msg.setText("Booked for " + p);
+                apptList.getItems().setAll(manager.getAppointments());
+            } catch (IllegalArgumentException ex) {
+                msg.setText(ex.getMessage());
+            }
+        });
+
+        VBox root = new VBox(8,
+                new Label("Choose a doctor:"), docList,
+                new Label("Your details:"), first, last, dob, phone, email,
+                new Label("Date and time:"), date, time,
+                bookBtn, msg,
+                new Label("Booked appointments:"), apptList);
+        root.setPadding(new Insets(15));
+
+        stage.setTitle("Clinic Booking");
+        stage.setScene(new Scene(root, 450, 750));
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

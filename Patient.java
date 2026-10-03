@@ -76,6 +76,6 @@ public class Patient {
 
     @Override // one-line summary shown in the patient list
     public String toString() {
-        return patientId + " - " + getFullName() + " (DOB " + dateOfBirth + ")";
+        return getPatientId() + " - " + getFullName() + " (DOB " + getDateOfBirth() + ")";
     }
 }

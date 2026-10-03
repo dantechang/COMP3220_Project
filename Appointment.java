@@ -47,6 +47,7 @@ public class Appointment {
     public String toString() {
         return "Appointment ID: " + appointmentID +
                "\nPatient: " + patient +
+               "\nContact: " + patient.getPhone() + (patient.getEmail().isEmpty() ? "" : ", " + patient.getEmail()) +
                "\nDoctor: " + doctor +
                "\nDate: " + date +
                "\nTime: " + time;

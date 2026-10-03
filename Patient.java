@@ -1,7 +1,4 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Patient {
 
@@ -12,7 +9,6 @@ public class Patient {
     private LocalDate dateOfBirth;
     private String phone;
     private String email;
-    private List<Appointment> appointments;
 
     // Registers a new patient; an empty name or phone is rejected
     public Patient(int patientId, String firstName, String lastName,
@@ -31,7 +27,6 @@ public class Patient {
         this.dateOfBirth = dateOfBirth;
         this.phone = phone.trim();
         this.email = email == null ? "" : email.trim();
-        this.appointments = new ArrayList<>();
     }
 
     public int getPatientId() {
@@ -72,18 +67,6 @@ public class Patient {
 
     public void setEmail(String email) {
         this.email = email == null ? "" : email.trim();
-    }
-
-    // Returns the patient's appointments (read-only so they can't be changed from outside)
-    public List<Appointment> getAppointments() {
-        return Collections.unmodifiableList(appointments);
-    }
-
-    // Adds a booked appointment to this patient's visits
-    public void addAppointment(Appointment appointment) {
-        if (appointment != null) {
-            appointments.add(appointment);
-        }
     }
 
     // Helper that checks for null or whitespace-only text

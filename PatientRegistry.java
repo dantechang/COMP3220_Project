@@ -1,7 +1,5 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PatientRegistry {
@@ -28,17 +26,5 @@ public class PatientRegistry {
         patients.put(nextId, patient);
         nextId++;
         return patient;
-    }
-
-    // Returns the patient with that ID, or null if not registered
-    public Patient findById(int patientId) {
-        return patients.get(patientId);
-    }
-
-    // Returns every registered patient for the list view, ordered by ID
-    public List<Patient> getAllPatients() {
-        List<Patient> list = new ArrayList<>(patients.values());
-        list.sort((a, b) -> Integer.compare(a.getPatientId(), b.getPatientId()));
-        return list;
     }
 }

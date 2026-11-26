@@ -6,7 +6,7 @@ import java.util.List;
 public class AppointmentManager {
 
     // Stores all appointments created during the current program session
-    private List<Appointment> appointments;
+    private final List<Appointment> appointments;
 
     // Keeps track of the ID that will be given to the next appointment
     private int nextAppointmentID;
@@ -44,6 +44,6 @@ public class AppointmentManager {
 
     // Returns the list of all appointments created so far
     public List<Appointment> getAppointments() {
-        return appointments;
+        return List.copyOf(appointments);
     }
 }

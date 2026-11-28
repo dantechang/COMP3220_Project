@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class UI extends Application {
 
-    PatientRegistry registry = new PatientRegistry();
-    AppointmentManager manager = new AppointmentManager();
+    private PatientRegistry registry = new PatientRegistry();
+    private AppointmentManager manager = new AppointmentManager();
 
     @Override
     public void start(Stage stage) {
